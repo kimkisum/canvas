@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas테스트</title>
+    <style>
+        body {
+            margin: 0;
+            background: #fff;
+        }
+
+        .canvas {
+            width: 500px;
+            height: 300px;
+            background: #8f8f8f;
+        }
+
+        .color-btn{
+            width: 30px;
+            height: 30px;
+            border:  0;
+            border-radius: 50%;
+        }
+
+        .color-btn[data-color='black'] {background: black;}
+        .color-btn[data-color='green'] {background: green;}
+        .color-btn[data-color='red'] {background: red;}
+        .color-btn[data-color='blue'] {background: blue;}
+        .result-image {
+            right: 0;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>캔버스 확인</h1>
+    <canvas class="canvas" id="canvas1" width="1000" height="600"></canvas>
+
+    <canvas class="canvas" id="canvas2" width="1000" height="600"></canvas>
+
+    <canvas class="canvas" id="canvas3" width="1000" height="600"></canvas>
+
+    <canvas class="canvas" id="canvas4" width="1000" height="600"></canvas>
+
+    <h1>그리기</h1>
+    <canvas class="canvas" id="canvas5" width="1000" height="600"></canvas>
+
+    </div>
+    <div class = "control">
+        <button class = "color-btn" data-color="black"></button>
+        <button class = "color-btn" data-color="red"></button>
+        <button class = "color-btn" data-color="green"></button>
+        <button class = "color-btn" data-color="blue"></button>
+    </div>
+
+    <button class="save-btn">이미지 저장</button>
+    
+    <div class="result-image">
+        
+    <script>
+        const canvas = document.getElementById('canvas1');
+        const context = canvas.getContext('2d');
+
+        context.fillRect(0, 0, 100, 100);
+        context.fillStyle = 'blue'
+        context.fillRect(50, 50, 100, 100);
+        context.fillStyle = 'red'
+        context.fillRect(100, 100, 100, 100);
+
+        context.clearRect(80, 80, 50, 50);
+
+        context.strokeRect(150, 150, 100, 100)
+
+        const canvas2 = document.getElementById('canvas2');
+        const ctx2 = canvas2.getContext('2d');
+
+        ctx2.beginPath();
+        ctx2.moveTo(100, 100);
+        ctx2.lineTo(300, 200);
+        ctx2.lineTo(100, 200);
+        ctx2.stroke();
+        ctx2.closePath();
+
+
+        function 라디안(각도) {
+            return 각도 * Math.PI / 180;
+        }
+
+        const canvas3 = document.getElementById('canvas3');
+        const ctx3 = canvas3.getContext('2d');
+        ctx3.beginPath();
+        ctx3.arc(300, 300, 50, 0, 라디안(360), false);
+        ctx3.stroke();
+
+        ctx3.beginPath();
+        ctx3.arc(500, 100, 50, 0, 라디안(180), true);
+        ctx3.lineTo(500, 200)
+        ctx3.lineTo(550, 100)
+        ctx3.stroke();
+
+        const canvas4 = document.getElementById('canvas4');
+        const ctx4 = canvas4.getContext('2d');
+
+        let x = 1;
+
+        let xPos = [];
+        let yPos = [];
+
+        let flagX = [];
+        let flagY = [];
+
+        let speedX = [];
+        let speedY = [];
+
+        for (i = 0; i < x; i++) {
+            xPos[i] = 10;
+            yPos[i] = 10;
+            flagX[i] = true;
+            flagY[i] = true;
+            speedX[i] = Math.random() * (10 - 1) + 1;
+            speedY[i] = Math.random() * (10 - 1) + 1;
+        }
+
+        function draw() {
+            ctx4.clearRect(0, 0, canvas4.width, canvas4.height);
+            for (i = 0; i < x; i++) {
+                ctx4.beginPath();
+                ctx4.arc(xPos[i], yPos[i], 10, 0, Math.PI * 2, false);
+                ctx4.fill();
+
+                if (flagX[i]) {
+                    xPos[i] += speedX[i];
+                }
+                else {
+                    xPos[i] -= speedX[i];
+                }
+
+                if (flagY[i]) {
+                    yPos[i] += speedY[i];
+                }
+                else {
+                    yPos[i] -= speedY[i];
+                }
+
+                if (xPos[i] > canvas4.width - 10 || xPos[i] < 10) {
+                    flagX[i] = !flagX[i];
+                }
+                if (yPos[i] > canvas4.height - 10  || yPos[i] < 10) {
+                    flagY[i] = !flagY[i];
+                }
+            }
+
+            requestAnimationFrame(draw);
+        }
+        
+        setInterval(() => {
+                x += 1;
+                xPos[x - 1] = Math.random() * (canvas4.width - 10) + 10;
+                yPos[x - 1] = Math.random() * (canvas4.height - 10) + 10;
+                speedX[x - 1] = Math.random() * (10 - 1) + 1;
+                speedY[x - 1] = Math.random() * (10 - 1) + 1;
+                flagX[x - 1] = xPos[x-1] > speedY[x - 1] > 5 ? true : false;
+                flagY[x - 1] = yPos[x-1] > speedX[x - 1] > 5 ? true : false;
+                //console.log(x)
+                if(x%100 == 0){
+                    console.log(x)
+                    x = 0;
+                }
+            }, 50);
+        draw();
+
+
+        const canvas5 = document.getElementById('canvas5');
+        const ctx5 = canvas5.getContext('2d');
+        const control = document.querySelector('.control');
+
+        const save_btn = document.querySelector('.save-btn')
+        
+        let colorVal = 'black';
+
+        function setColor(e){
+            colorVal = e.target.getAttribute('data-color');
+            ctx5.fillStyle = colorVal;
+        }
+
+        control.addEventListener('click',setColor)
+
+
+        let flag = false;
+
+        function clickHandler(e){
+            if(!flag) return;
+            
+            var rect = canvas5.getBoundingClientRect();
+            var x = e.clientX - rect.left;
+            var y = e.clientY - rect.top;
+            ctx5.beginPath();
+            ctx5.arc(x*2, y*2, 10, 0 , Math.PI*2 , false);
+            ctx5.fill();
+        }
+        
+        canvas5.addEventListener('mousemove',clickHandler);
+        canvas5.addEventListener('mousedown',function(){
+            flag = true;
+        })
+        canvas5.addEventListener('mouseup',function(){
+            flag = false;
+        })
+
+        const resultImage = document.querySelector('.result-image')
+        save_btn.addEventListener('click',function(){
+            const url = canvas5.toDataURL('imgae/png');
+            const imgElem = new Image();
+            imgElem.src = url;
+            resultImage.appendChild(imgElem);
+            
+        })
+    </script>
+
+</body>
+
+</html>
