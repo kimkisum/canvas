@@ -10,19 +10,56 @@
 <body>
     <div id="barchart" style="height: 400px; width: 600px;"></div>
     <div id="graphChart" style="height: 400px; width: 600px;"></div>
+    <div id="lineRaceChart" style="height: 400px; width: 600px;"></div>
 
     <script>
-        // 바 차트에 사용할 샘플 데이터
+        // 차트에 사용할 샘플 데이터
         let data = {
-            data : [16, 8, 16, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25],
-            labels : ['A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E'],
-            colors : ['#FF6384', '#36A2EB', '#FFCE56', '#00cc99', '#cc00cc']
+            data: [16, 8, 16, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25],
+            labels: ['A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E'],
+            colors: ['#FF6384', '#36A2EB', '#FFCE56', '#00cc99', '#cc00cc']
         }
 
-        barChart('barchart',data);
+        barChart('barchart', data);
 
-        
-        graphChart('graphChart',data);
+        graphChart('graphChart', data);
+
+        let stackedlinedata = {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data: [
+                {
+                    name: 'Email',
+                    type: 'line',
+                    stack: 'Total',
+                    data: [120, 132, 101, 134, 90, 230, 210, 456,805,123,135,485,215]
+                },
+                {
+                    name: 'Union Ads',
+                    type: 'line',
+                    stack: 'Total',
+                    data: [220, 182, 191, 234, 290, 330, 310, 456,805,123,135,485,215]
+                },
+                {
+                    name: 'Video Ads',
+                    type: 'line',
+                    stack: 'Total',
+                    data: [150, 232, 201, 154, 190, 330, 410, 456,805,123,135,485,215]
+                },
+                {
+                    name: 'Direct',
+                    type: 'line',
+                    stack: 'Total',
+                    data: [320, 332, 301, 334, 390, 330, 320, 456,805,123,135,485,215]
+                },
+                {
+                    name: 'Search Engine',
+                    type: 'line',
+                    stack: 'Total',
+                    data: [820, 932, 901, 934, 1290, 1330, 1320, 456,805,123,135,485,215]
+                }
+            ]
+        }
+        stackedLineChart('lineRaceChart', stackedlinedata);
     </script>
 </body>
 
