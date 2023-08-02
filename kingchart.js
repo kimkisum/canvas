@@ -27,7 +27,7 @@ function barChart(mychart_id){
     var bottomMargin = 70; // 막대 차트 하단 여백을 70px로 설정
     var canvasHeight = canvas.height - bottomMargin;
     var x = gap;
-    var yPadding = 10;
+    var yPadding = 30;
 
     const ctx = canvas.getContext('2d');
     const cty = Ycanvas.getContext('2d');
@@ -53,7 +53,7 @@ function barChart(mychart_id){
             ctx.stroke();
             
             cty.beginPath();
-            cty.moveTo(Ycanvas.width - 1, 2); // 실선 시작점
+            cty.moveTo(Ycanvas.width - 1, yPadding - 10); // 실선 시작점
             cty.lineTo(Ycanvas.width - 1, yPosition+2); // 점선 끝점
             cty.stroke();
         }else{
