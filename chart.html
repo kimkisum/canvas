@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./kingchart.js"></script>
+</head>
+
+<body>
+    <div id="mychart" style="height: 400px; width: 600px; overflow: hidden;"></div>
+
+    <script>
+        // 바 차트에 사용할 샘플 데이터
+        var data = [20, 8, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25];
+        var labels = ['A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E'];
+        var colors = ['#FF6384', '#36A2EB', '#FFCE56', '#00cc99', '#cc00cc'];
+
+        barChart('mychart');
+    </script>
+</body>
+
+</html>
