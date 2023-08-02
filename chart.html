@@ -8,17 +8,21 @@
 </head>
 
 <body>
-    <div id="mychart" style="height: 400px; width: 600px; overflow: hidden;"></div>
+    <div id="barchart" style="height: 400px; width: 600px;"></div>
+    <div id="graphChart" style="height: 400px; width: 600px;"></div>
 
     <script>
         // 바 차트에 사용할 샘플 데이터
         let data = {
-            data : [20, 8, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25],
+            data : [16, 8, 16, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25],
             labels : ['A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E'],
             colors : ['#FF6384', '#36A2EB', '#FFCE56', '#00cc99', '#cc00cc']
         }
 
-        barChart('mychart',data);
+        barChart('barchart',data);
+
+        
+        graphChart('graphChart',data);
     </script>
 </body>
 

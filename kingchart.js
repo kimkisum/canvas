@@ -1,4 +1,4 @@
-function barChart(mychart_id,data) {
+function barChart(mychart_id, data) {
     const mychart = document.getElementById(mychart_id);
     mychart.style.display = "flex";
 
@@ -136,48 +136,118 @@ function mousescroll(Object) {
     });
 }
 
-function graphChart(mychart_id) {
-    // 캔버스 요소 가져오기
-    const canvas = document.getElementById('graphCanvas');
+function graphChart(mychart_id, data) {
+    const mychart = document.getElementById(mychart_id);
+    mychart.style.display = "flex";
+
+    //데이터 전처리
+    var maxValue = Math.max(...data.data) + 10; // Math.max(...data.data)로 수정하여 최대값 계산
+    var gap = 60; // 간격을 20px로 설정
+    var bottomMargin = 55; // 차트 하단 여백을 55px로 설정
+    var x = 30;
+    var yPadding = 30;
+
+    // 바 차트 뒤에 y축 라벨을 표시하는 캔버스
+    let Ycanvas = createObject(mychart, 'canvas')
+    Ycanvas.width = 30; // 30px로 설정
+    Ycanvas.height = mychart.offsetHeight;
+    Ycanvas.style.background = "transparent";
+
+    //캔버스 만들어서 div에 넣기
+    let scrollDiv = createObject(mychart, 'div')
+    scrollDiv.style.width = mychart.offsetWidth + "px";
+    scrollDiv.style.height = mychart.offsetHeight + "px";
+    scrollDiv.style.overflow = "hidden"; // 스크롤 기능 활성화
+
+    let canvas = createObject(scrollDiv, 'canvas');
+    canvas.width = data.data.length * 60; // 막대 간 간격 60px로 설정
+    canvas.height = mychart.offsetHeight - (yPadding - 9);
+    canvas.style.background = "transparent"
+
+    var canvasHeight = canvas.height - bottomMargin;
+
     const ctx = canvas.getContext('2d');
+    const cty = Ycanvas.getContext('2d');
 
-    // 데이터 배열 (가상의 데이터 예시)
-    const data = [10, 20, 30, 25, 40, 15];
+    ctx.fillStyle = 'transparent';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 그래프의 가로, 세로 크기 가져오기
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
+    // y축 라벨링
+    var yAxisLabelInterval = Math.ceil(maxValue / 5); // y축 라벨링 간격 계산
+    cty.fillStyle = '#ffffff';
+    cty.font = '14px Arial';
+    for (var i = 0; i <= 5; i++) {
+        cty.fillStyle = '#000000';
+        var yAxisLabel = yAxisLabelInterval * i;
+        var yPosition = canvasHeight - (yAxisLabel / maxValue) * canvasHeight + yPadding; // 라벨의 위치 설정
+        cty.fillText(yAxisLabel, Ycanvas.width - 25, yPosition); // y축 라벨링
 
-    // 그래프의 간격과 여백 설정
-    const padding = 20;
-    const graphWidth = canvasWidth - 2 * padding;
-    const graphHeight = canvasHeight - 2 * padding;
+        // y축 라벨링을 위한 점선 그리기 (가로로 변경)
+        if (i == 0) {
+            ctx.beginPath();
+            ctx.moveTo(0, yPosition + 1); // 실선 시작점
+            ctx.lineTo(canvas.width, yPosition + 1); // 점선 끝점
+            ctx.stroke();
 
-    // x축 간격 계산
-    const dataCount = data.length;
-    const xInterval = graphWidth / (dataCount - 1);
-
-    // y축 최댓값, 최솟값 계산
-    const maxValue = Math.max(...data);
-    const minValue = Math.min(...data);
-
-    // y축 간격 계산
-    const yInterval = graphHeight / (maxValue - minValue);
-
-    // 그래프 그리기 시작
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-    ctx.beginPath();
-    ctx.strokeStyle = 'blue';
-    ctx.moveTo(padding, canvasHeight - padding - (data[0] - minValue) * yInterval);
-
-    // 데이터를 이용하여 그래프 그리기
-    for (let i = 1; i < dataCount; i++) {
-        const x = padding + i * xInterval;
-        const y = canvasHeight - padding - (data[i] - minValue) * yInterval;
-        ctx.lineTo(x, y);
+            cty.beginPath();
+            cty.moveTo(Ycanvas.width - 1, yPadding - 10); // 실선 시작점
+            cty.lineTo(Ycanvas.width - 1, yPosition + 2); // 점선 끝점
+            cty.stroke();
+        } else {
+            ctx.strokeStyle = '#cccccc';
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.setLineDash([2, 2]);
+            ctx.moveTo(0, yPosition); // 점선 시작점
+            ctx.lineTo(canvas.width, yPosition); // 점선 끝점
+            ctx.stroke();
+        }
     }
 
-    ctx.stroke();
-    ctx.closePath();
+    ctx.setLineDash([0, 0]);
+    ctx.beginPath();
+    ctx.strokeStyle = 'blue';
+
+    for (var i = 0; i < data.data.length; i++) {
+        var y = canvasHeight - (data.data[i] / maxValue) * canvasHeight;
+
+
+        if (i == 0) {
+            ctx.moveTo(x, y + yPadding);
+        } else {
+            ctx.lineTo(x, y + yPadding);
+        }
+        ctx.stroke();
+
+
+        x += gap;
+    }
+
+    x = 30
+
+    ctx.strokeStyle = '#000000';
+    for (var i = 0; i < data.data.length; i++) {
+        var y = canvasHeight - (data.data[i] / maxValue) * canvasHeight;
+
+        ctx.fillStyle = '#000000';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center'; // 텍스트 가운데 정렬
+
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 2]);
+        ctx.moveTo(x, canvasHeight + 30); // 점선 시작점
+        ctx.lineTo(x, y + 30); // 점선 끝점
+        ctx.stroke();
+        // x축 라벨링
+        ctx.fillText(data.labels[i], x , canvasHeight + 20 + yPadding);
+
+        // 바 위에 바의 값을 표시 (값이 보이도록 위치 조정)
+        ctx.fillText(data.data[i], x + 40 / 2, y - 5 + yPadding);
+
+        x += gap;
+    }
+
+    mousescroll(scrollDiv);
+
 }
