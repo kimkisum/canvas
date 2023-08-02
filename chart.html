@@ -12,11 +12,13 @@
 
     <script>
         // 바 차트에 사용할 샘플 데이터
-        var data = [20, 8, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25];
-        var labels = ['A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E'];
-        var colors = ['#FF6384', '#36A2EB', '#FFCE56', '#00cc99', '#cc00cc'];
+        let data = {
+            data : [20, 8, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25],
+            labels : ['A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E'],
+            colors : ['#FF6384', '#36A2EB', '#FFCE56', '#00cc99', '#cc00cc']
+        }
 
-        barChart('mychart');
+        barChart('mychart',data);
     </script>
 </body>
 
