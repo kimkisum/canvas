@@ -1,7 +1,14 @@
-
 function barChart(mychart_id){
     const mychart = document.getElementById(mychart_id);
     mychart.style.display = "flex";
+
+    //데이터 전처리
+    var maxValue = Math.max(...data) + 10; // Math.max(...data)로 수정하여 최대값 계산
+    var barWidth = 40; // 각 막대의 너비를 40px로 설정
+    var gap = 20; // 막대 간 간격을 20px로 설정
+    var bottomMargin = 55; // 막대 차트 하단 여백을 70px로 설정
+    var x = gap;
+    var yPadding = 30;
 
     // 바 차트 뒤에 y축 라벨을 표시하는 캔버스
     let Ycanvas = createObject(mychart, 'canvas')
@@ -12,22 +19,15 @@ function barChart(mychart_id){
     //캔버스 만들어서 div에 넣기
     let scrollDiv = createObject(mychart, 'div')
     scrollDiv.style.width = mychart.offsetWidth + "px";
-    scrollDiv.style.height = mychart.offsetHeight + "px";
+    scrollDiv.style.height = mychart.offsetHeight+ "px";
     scrollDiv.style.overflow = "hidden"; // 스크롤 기능 활성화
 
     let canvas = createObject(scrollDiv, 'canvas');
     canvas.width = data.length * 60; // 막대 간 간격 60px로 설정
-    canvas.height = mychart.offsetHeight;
+    canvas.height = mychart.offsetHeight - (yPadding - 9);
     canvas.style.background = "transparent"
 
-    //데이터 전처리
-    var maxValue = Math.max(...data) + 10; // Math.max(...data)로 수정하여 최대값 계산
-    var barWidth = 40; // 각 막대의 너비를 40px로 설정
-    var gap = 20; // 막대 간 간격을 20px로 설정
-    var bottomMargin = 70; // 막대 차트 하단 여백을 70px로 설정
     var canvasHeight = canvas.height - bottomMargin;
-    var x = gap;
-    var yPadding = 30;
 
     const ctx = canvas.getContext('2d');
     const cty = Ycanvas.getContext('2d');
@@ -81,7 +81,7 @@ function barChart(mychart_id){
         ctx.fillText(labels[i], x + barWidth / 2, canvasHeight + 20 + yPadding);
 
         // 바 위에 바의 값을 표시 (값이 보이도록 위치 조정)
-        ctx.fillText(data[i], x + barWidth / 2, y - 10 + yPadding);
+        ctx.fillText(data[i], x + barWidth / 2, y - 5 + yPadding);
 
         x += barWidth + gap;
     }
@@ -106,11 +106,14 @@ function createObject(parent, mode){
 function mousescroll(Object){
     let isDragging = false;
     let dragStartX, scrollStartX;
+    let dragStartY, scrollStartY;
     // 마우스 다운 이벤트 리스너
     Object.addEventListener("mousedown", function (event) {
         isDragging = true;
         dragStartX = event.clientX;
         scrollStartX = Object.scrollLeft;
+        dragStartY = event.clientY;
+        scrollStartY = Object.scrollTop;
     });
 
     // 마우스 업 이벤트 리스너
@@ -127,6 +130,8 @@ function mousescroll(Object){
         if (isDragging) {
             const deltaX = event.clientX - dragStartX;
             Object.scrollLeft = scrollStartX - deltaX; // 마우스 드래그에 따라 스크롤 기능 적용
+            const deltaY = event.clientY - dragStartY;
+            Object.scrollTop = scrollStartY - deltaY; // 마우스 드래그에 따라 스크롤 기능 적용
         }
     });
 }
