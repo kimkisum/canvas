@@ -263,6 +263,7 @@ function graphChart(mychart_id, data) {
 //매개변수 : 객체 이름, 데이터
 function stackedLineChart(mychart_id, data) {
     const mychart = document.getElementById(mychart_id);
+    while(mychart.firstChild) {mychart.removeChild(mychart.firstChild);}
     mychart.style.display = "flex";
 
     // 데이터 전처리
@@ -273,7 +274,7 @@ function stackedLineChart(mychart_id, data) {
     }
     var gap = 60; // 간격을 60px로 설정
     var bottomMargin = 55; // 차트 하단 여백을 55px로 설정
-    var defaultX = 30;
+    var defaultX = 0;
     var x = defaultX;
     var yPadding = 30;
 
@@ -282,6 +283,16 @@ function stackedLineChart(mychart_id, data) {
     Ycanvas.width = 60; // 30px로 설정
     Ycanvas.height = mychart.offsetHeight;
     Ycanvas.style.background = "transparent";
+
+    // 툴팁을 생성하기 위한 div 요소
+    let tooltip = createObject(mychart, 'div');
+    tooltip.style.position = 'absolute';
+    tooltip.style.display = 'none';
+    tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    tooltip.style.color = '#ffffff';
+    tooltip.style.padding = '5px';
+    tooltip.style.fontFamily = 'Arial';
+    tooltip.style.fontSize = '12px';
 
     // 캔버스 만들어서 div에 넣기
     let scrollDiv = createObject(mychart, 'div')
@@ -382,5 +393,36 @@ function stackedLineChart(mychart_id, data) {
             x += gap;
         }
     }
+
+    // 캔버스에 마우스 이벤트 리스너 추가
+    canvas.addEventListener('mousemove', function (event) {
+        
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        // 마우스 위치를 바탕으로 해당 데이터 포인트의 인덱스 계산
+        const dataPointIndex = Math.round((mouseX - defaultX) / gap);
+
+
+        // 툴팁에 표시할 데이터 준비
+        let tooltipData = '';
+        for (let a = 0; a < data.data.length; a++) {
+            tooltipData += data.data[a].name + ': ' + data.data[a].data[dataPointIndex] + '\n';
+        }
+
+        // 툴팁을 마우스 위치에 따라 보여줌
+        tooltip.style.left = event.pageX + 10 + 'px';
+        tooltip.style.top = event.pageY + 10 + 'px';
+        tooltip.innerText = tooltipData;
+        tooltip.style.display = 'block';
+    });
+
+    // 마우스가 캔버스를 벗어나면 툴팁을 숨김
+    canvas.addEventListener('mouseout', function () {
+        tooltip.style.display = 'none';
+        stackedLineChart(mychart_id, data)
+    });
+
     mousescroll(scrollDiv)
 }
