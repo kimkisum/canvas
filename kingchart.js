@@ -43,6 +43,15 @@ function mousescroll(element) {
             element.scrollTop = scrollStartY - deltaY; // 마우스 드래그에 따라 스크롤 기능 적용
         }
     });
+    // 마우스 휠 스크롤 이벤트 리스너
+    element.addEventListener("wheel", function (event) {
+        // Chrome과 Firefox의 마우스 휠 이벤트 값이 다릅니다.
+        // Chrome: event.deltaY, Firefox: event.wheelDeltaY
+        const scrollDelta = (event.deltaY || event.wheelDeltaY) * -1;
+        element.scrollTop -= scrollDelta / 2; // 휠 스크롤 속도 조정
+        event.preventDefault(); // 기본 스크롤 동작 방지
+    });
+
 }
 
 //바차트
