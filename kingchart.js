@@ -1,4 +1,3 @@
-
 let defaultColors = ['#FF6384', '#36A2EB', '#FFCE56', '#00cc99', '#cc00cc'];
 
 //element 엘리먼트임
@@ -420,7 +419,6 @@ function stackedLineChart(mychart_id, data) {
     // 마우스가 캔버스를 벗어나면 툴팁을 숨김
     canvas.addEventListener('mouseout', function () {
         tooltip.style.display = 'none';
-        stackedLineChart(mychart_id, data)
     });
 
     mousescroll(scrollDiv)
