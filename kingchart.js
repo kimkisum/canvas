@@ -11,7 +11,6 @@ function createObject(parent, mode) {
     return object;
 }
 
-
 //마우스 클릭 스크롤 함수
 //매개변수 : 엘리먼트객체
 function mousescroll(Object) {
@@ -351,7 +350,7 @@ function stackedLineChart(mychart_id, data) {
         console.log(a)
 
         ctx.beginPath();
-        ctx.strokeStyle = defaultColors[a % defaultColors.length];;
+        ctx.strokeStyle = defaultColors[a % defaultColors.length];
         x = defaultX;
 
         for (var i = 0; i < data.data[a].data.length; i++) {
@@ -425,4 +424,49 @@ function stackedLineChart(mychart_id, data) {
     });
 
     mousescroll(scrollDiv)
+}
+
+//파이차트
+//매개변수 : 객체 이름, 데이터
+function pieChart(mychart_id, data){
+    const mychart = document.getElementById(mychart_id);
+    const canvas = createObject(mychart, 'canvas');
+
+    canvas.height = mychart.offsetHeight;
+    canvas.width = mychart.offsetWidth;
+
+    const ctx = canvas.getContext('2d');
+    const total = data.data.reduce((acc, value) => acc + value, 0);
+
+    const padding = 20;
+    let startAngle = 0;
+
+    const drawCanvasWidth = canvas.width - (padding * 10);
+    const drawCanvasHeight = canvas.width - (padding * 10);
+
+    for (let i = 0; i < data.data.length; i++) {
+      const sliceAngle = (2 * Math.PI * data.data[i]) / total;
+      ctx.beginPath();
+      
+      ctx.fillStyle = data.colors[i % data.colors.length];
+      ctx.moveTo(drawCanvasWidth / 2, drawCanvasHeight / 2);
+      ctx.arc(
+        (drawCanvasWidth + padding) / 2,
+        (drawCanvasHeight + padding) / 2,
+        Math.min(drawCanvasWidth - (padding * 4) , drawCanvasHeight - ( padding * 4 )) / 2,
+        startAngle,
+        startAngle + sliceAngle
+      );
+      ctx.closePath();
+      ctx.fill();
+
+      // 라벨 출력
+      ctx.font = '14px Arial';
+      ctx.fillStyle = '#000';
+      const labelX = ((drawCanvasWidth) + 10)/ 2 + Math.cos(startAngle + sliceAngle / 2) * 170;
+      const labelY = ((drawCanvasHeight) + 30) / 2 + Math.sin(startAngle + sliceAngle / 2) * 170;
+      ctx.fillText(data.labels[i], labelX, labelY);
+
+      startAngle += sliceAngle;
+    }
 }
