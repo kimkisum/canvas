@@ -1,47 +1,47 @@
 
 let defaultColors = ['#FF6384', '#36A2EB', '#FFCE56', '#00cc99', '#cc00cc'];
 
-//Object라고 적긴했지만 엘리먼트임
+//element 엘리먼트임
 //매개변수 : 추가할 부모 엘리먼트,만들고 싶은 엘리먼트
 //반환 : 만들어진 엘리먼트 객체
 function createObject(parent, mode) {
-    let object = document.createElement(mode);
-    parent.appendChild(object);
+    let element = document.createElement(mode);
+    parent.appendChild(element);
 
-    return object;
+    return element;
 }
 
 //마우스 클릭 스크롤 함수
 //매개변수 : 엘리먼트객체
-function mousescroll(Object) {
+function mousescroll(element) {
     let isDragging = false;
     let dragStartX, scrollStartX;
     let dragStartY, scrollStartY;
     // 마우스 다운 이벤트 리스너
-    Object.addEventListener("mousedown", function (event) {
+    element.addEventListener("mousedown", function (event) {
         isDragging = true;
         dragStartX = event.clientX;
-        scrollStartX = Object.scrollLeft;
+        scrollStartX = element.scrollLeft;
         dragStartY = event.clientY;
-        scrollStartY = Object.scrollTop;
+        scrollStartY = element.scrollTop;
     });
 
     // 마우스 업 이벤트 리스너
-    Object.addEventListener("mouseup", function () {
+    element.addEventListener("mouseup", function () {
         isDragging = false;
     });
 
-    Object.addEventListener("mouseout", function () {
+    element.addEventListener("mouseout", function () {
         isDragging = false;
     });
 
     // 마우스 무브 이벤트 리스너
-    Object.addEventListener("mousemove", function (event) {
+    element.addEventListener("mousemove", function (event) {
         if (isDragging) {
             const deltaX = event.clientX - dragStartX;
-            Object.scrollLeft = scrollStartX - deltaX; // 마우스 드래그에 따라 스크롤 기능 적용
+            element.scrollLeft = scrollStartX - deltaX; // 마우스 드래그에 따라 스크롤 기능 적용
             const deltaY = event.clientY - dragStartY;
-            Object.scrollTop = scrollStartY - deltaY; // 마우스 드래그에 따라 스크롤 기능 적용
+            element.scrollTop = scrollStartY - deltaY; // 마우스 드래그에 따라 스크롤 기능 적용
         }
     });
 }

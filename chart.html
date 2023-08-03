@@ -4,16 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./kingchart.js"></script>
 </head>
 
 <body>
-    <div id="barchart" style="height: 400px; width: 600px;"></div>
-    <div id="graphChart" style="height: 400px; width: 600px;"></div>
-    <div id="lineRaceChart" style="height: 400px; width: 600px;"></div>
-    <div id="pieChart" style="height: 400px; width: 600px;"></div>
-
+    <div id = 'scrollBody' style="overflow: hidden; width: 100%; height: 98vh;">
+        <div id="barchart" style="height: 400px; width: 600px;"></div>
+        <div id="graphChart" style="height: 400px; width: 600px;"></div>
+        <div id="lineRaceChart" style="height: 400px; width: 600px;"></div>
+        <div id="pieChart" style="height: 400px; width: 600px;"></div>
+    </div>
+    <script src="./kingchart.js"></script>
     <script>
+        mousescroll(document.getElementById('scrollBody'));
+
         // 차트에 사용할 샘플 데이터
         let data = {
             data: [16, 8, 16, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25, 20, 30, 15, 10, 25],
